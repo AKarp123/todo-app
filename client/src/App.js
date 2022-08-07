@@ -1,4 +1,4 @@
-import logo from "./logo.svg";
+import Main from "./components/Main";
 import * as React from "react";
 import "./App.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -17,7 +17,7 @@ function App() {
         <ThemeProvider theme={darkTheme}>
             <Navbar loggedInState={isLoggedIn} toggleLogin={setIsLoggedIn}/>
             <div className="App">
-              Todo App
+                <Main />
             </div>
         </ThemeProvider>
     );

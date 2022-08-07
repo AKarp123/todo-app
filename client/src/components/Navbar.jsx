@@ -13,6 +13,8 @@ export default function ButtonAppBar(props) {
     const changeLogin = () => {
         props.toggleLogin(!props.loggedInState);
     }
+
+    
         
     return (
         <Box sx={{ flexGrow: 1 }}>
