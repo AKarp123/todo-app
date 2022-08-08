@@ -1,5 +1,6 @@
 import React from "react";
 import Todo from "./Todo";
+import { v4 as uuidv4 } from "uuid";
 
 
 export default function Main() {
@@ -7,18 +8,21 @@ export default function Main() {
         {
             todoContent: "Work on this app",
             isCompleted: false,
+            id: uuidv4(),
 
         },
         {
             todoContent: "Reach 4 digit in osu!",
             isCompleted: true,
+            id: uuidv4(),
         },
     ];
     return (
         <div>
-            {todos.map((todo, index) => (
+            {todos.map((todo) => (
                 <Todo
-                    key={index}
+                    key={todo.id}
+                    id={todo.id}
                     todoContent={todo.todoContent}
                     isCompleted={todo.isCompleted}
                 />
