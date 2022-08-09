@@ -4,6 +4,7 @@ import "./App.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Navbar from "./components/Navbar";
 
+
 const darkTheme = createTheme({
     palette: {
         mode: "dark",
