@@ -14,10 +14,6 @@ const todos = [
         isCompleted: true,
         id: uuidv4(),
     },
-    
-    
-    
-    
 ];
 export default function Main() {
     const [todoList, setTodos] = React.useState(todos);
@@ -26,8 +22,16 @@ export default function Main() {
         setTodos(todoList.filter((todo) => todo.id !== id));
     };
 
-    
-    
+    const addTodo = (todoObj) => {
+        const newTodo = {
+            todoContent: todoObj.todoContent,
+            isCompleted: todoObj.isCompleted,
+            id: uuidv4()
+        };
+
+        setTodos([...todoList, newTodo]);
+    };
+
     const toggleComplete = (id) => {
         setTodos(
             todoList.map((todo) => {
@@ -40,9 +44,17 @@ export default function Main() {
     };
 
     return (
-        <Grid container spacing={3} sx={{justifyContent: "center", marginTop: "5vh", paddingLeft: "110px", paddingRight: "110px"} }>
+        <Grid
+            container
+            spacing={3}
+            sx={{
+                justifyContent: "center",
+                marginTop: "5vh",
+                paddingLeft: "110px",
+                paddingRight: "110px",
+            }}
+        >
             {todoList.map((todo, index) => (
-
                 <Grid item lg={3} md={6} sm={12} key={todo.id}>
                     <Todo
                         num={index + 1}

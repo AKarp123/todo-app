@@ -35,7 +35,7 @@ export default function Todo(props) {
                     {props.num}
                 </Typography>
 
-                <Typography variant="body2" sx={styles}>
+                <Typography variant="body2" sx={{...styles, paddingTop: "35px", paddingBottom: "35px"}}>
                     {props.todoContent}
                 </Typography>
             </CardContent>
