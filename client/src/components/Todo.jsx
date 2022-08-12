@@ -8,15 +8,10 @@ import {
 } from "@mui/material";
 
 export default function Todo(props) {
-    const styles = () => {
-        if (props.isCompleted) {
-            return {
-                textDecoration: "line-through",
-            };
-        }
-        return "";
-    };
-
+    
+    const styles = { 
+        textDecoration: props.isCompleted ? "line-through" : "none",
+    }
     const removeTodo = () => {
         props.removeTodo(props.id);
     };
@@ -35,7 +30,7 @@ export default function Todo(props) {
                     {props.num}
                 </Typography>
 
-                <Typography variant="body2" sx={{...styles, paddingTop: "35px", paddingBottom: "35px"}}>
+                <Typography variant="body2" sx={{ ...styles, paddingTop: "35px", paddingBottom: "35px"}}>
                     {props.todoContent}
                 </Typography>
             </CardContent>
