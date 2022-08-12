@@ -36,7 +36,7 @@ export default function Todo(props) {
             </CardContent>
             <CardActions disableSpacing>
                 <Button size="small" onClick={toggleComplete}>
-                    Mark as done
+                    {props.isCompleted ? "Mark undone" : "Mark as done"}
                 </Button>
                 <Button size="small" onClick={removeTodo}>
                     Delete Todo
