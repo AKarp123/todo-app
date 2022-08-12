@@ -62,7 +62,7 @@ export default function Main() {
                 }}
             >
                 {todoList.map((todo, index) => (
-                    <Grid item lg={3} md={6} sm={12} key={todo.id}>
+                    <Grid item xl={3} lg={4} md={6} sm={12} key={todo.id}>
                         <Todo
                             num={index + 1}
                             id={todo.id}
