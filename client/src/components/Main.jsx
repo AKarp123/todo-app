@@ -3,6 +3,8 @@ import Todo from "./Todo";
 import { v4 as uuidv4 } from "uuid";
 import { Grid } from "@mui/material";
 import NewTodo from "./NewTodo";
+import { auth } from "../firebase"
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const todos = [
     {
@@ -28,6 +30,7 @@ const todos = [
 ];
 export default function Main() {
     const [todoList, setTodos] = React.useState(todos);
+    const [user, loading, error] = useAuthState(auth);
 
     const removeTodo = (id) => {
         setTodos(todoList.filter((todo) => todo.id !== id));
@@ -48,6 +51,14 @@ export default function Main() {
             })
         );
     };
+
+    if(!user) {
+        return <div>Please login to use app!</div>
+    }
+
+    if(loading) {
+        return <div>Loading...</div> 
+    }
 
     return (
         <>

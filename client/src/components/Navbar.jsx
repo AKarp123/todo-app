@@ -9,11 +9,20 @@ import {
 } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../firebase";
+import { auth, signIn, signOut } from "../firebase";
 
 export default function ButtonAppBar(props) {
+    // const changeLogin = () => {
+    //     props.toggleLogin(!props.loggedInState);
+    // }
+
     const changeLogin = () => {
-        props.toggleLogin(!props.loggedInState);
+        if(user == null) {
+            signIn();
+        }
+        else if(user) {
+            signOut();
+        }
     }
 
     const [user] = useAuthState(auth);
@@ -30,7 +39,7 @@ export default function ButtonAppBar(props) {
                     >
                         Your Todos
                     </Typography>
-                    <Button color="inherit" onClick={changeLogin}>{props.loggedInState ? "Log Out" : "Login"}</Button>
+                    <Button color="inherit" onClick={changeLogin}>{user ? "Log Out" : "Login"}</Button>
                 </Toolbar>
             </AppBar>
         </Box>
