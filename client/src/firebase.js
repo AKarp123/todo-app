@@ -6,6 +6,7 @@ import {
     signInWithPopup,
     signOut as userSignOut,
 } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 // import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -25,6 +26,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
+const db = getFirestore(app)
 
 const signIn = () => {
     const googleAuthProvider = new GoogleAuthProvider();
@@ -36,4 +38,4 @@ const signOut = () => {
     userSignOut(auth);
 };
 
-export { app, auth, signIn, signOut };
+export { app, auth, signIn, signOut, db };
