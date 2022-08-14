@@ -56,9 +56,11 @@ export default function Main() {
         return <div>Please login to use app!</div>
     }
 
-    if(loading) {
+    else if(loading) {
         return <div>Loading...</div> 
     }
+
+
 
     
 

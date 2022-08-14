@@ -26,12 +26,18 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
-const db = getFirestore(app)
+const db = getFirestore(app);
 
 const signIn = () => {
     const googleAuthProvider = new GoogleAuthProvider();
 
-    signInWithPopup(auth, googleAuthProvider);
+    signInWithPopup(auth, googleAuthProvider)
+        .then((result) => {
+            console.log("User signed in: ", result.user.uid);
+        })
+        .catch((error) => {
+            console.log("User aborted sign-in window")
+        });
 };
 
 const signOut = () => {
