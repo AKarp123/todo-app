@@ -8,12 +8,15 @@ import {
     IconButton,
 } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../firebase";
 
 export default function ButtonAppBar(props) {
     const changeLogin = () => {
         props.toggleLogin(!props.loggedInState);
     }
 
+    const [user] = useAuthState(auth);
     
         
     return (

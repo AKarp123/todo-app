@@ -3,6 +3,9 @@ import * as React from "react";
 import "./App.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Navbar from "./components/Navbar";
+import * as app from "./firebase"
+import { useAuthState } from "react-firebase-hooks/auth";
+
 
 
 const darkTheme = createTheme({
@@ -13,10 +16,11 @@ const darkTheme = createTheme({
 
 function App() {
 
-    const [isLoggedIn, setIsLoggedIn] = React.useState(true);
+    // const [isLoggedIn, setIsLoggedIn] = React.useState(true);
+    const [user, loading, error] = useAuthState(app.auth);
     return (
         <ThemeProvider theme={darkTheme}>
-            <Navbar loggedInState={isLoggedIn} toggleLogin={setIsLoggedIn}/>
+            <Navbar loggedInState={user} signIn={app.signIn}/>
             <div className="App">
                 <Main />
             </div>
