@@ -3,8 +3,11 @@ import Todo from "./Todo";
 import { v4 as uuidv4 } from "uuid";
 import { Grid } from "@mui/material";
 import NewTodo from "./NewTodo";
-import { auth } from "../firebase"
+import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { collection, orderBy, query, limit } from "firebase/firestore";
+
 
 const todos = [
     {
@@ -29,40 +32,39 @@ const todos = [
     },
 ];
 export default function Main() {
-    const [todoList, setTodos] = React.useState(todos);
     const [user, loading, error] = useAuthState(auth);
+    const userRef = collection(db, user.uid);
+    const q = query(userRef, orderBy("createdAt", "desc"), limit(10));
+    const [todoList, load, e] = useCollectionData(q, { idField: "id" });
+    
+
+   
+    
 
     const removeTodo = (id) => {
-        setTodos(todoList.filter((todo) => todo.id !== id));
+        // setTodos(todoList.filter((todo) => todo.id !== id));
     };
 
     const addTodo = (todoObj) => {
-        
-        setTodos([...todoList, todoObj]);
+        // setTodos([...todoList, todoObj]);
     };
 
     const toggleComplete = (id) => {
-        setTodos(
-            todoList.map((todo) => {
-                if (todo.id === id) {
-                    todo.isCompleted = !todo.isCompleted;
-                }
-                return todo;
-            })
-        );
+        // setTodos(
+        //     todoList.map((todo) => {
+        //         if (todo.id === id) {
+        //             todo.isCompleted = !todo.isCompleted;
+        //         }
+        //         return todo;
+        //     })
+        // );
     };
 
-    if(!user) {
-        return <div>Please login to use app!</div>
+    if (e) {
+        return <div>Please login to use app!</div>;
+    } else if (loading || todoList === undefined) {
+        return <div>Loading...</div>;
     }
-
-    else if(loading) {
-        return <div>Loading...</div> 
-    }
-
-
-
-    
 
     return (
         <>

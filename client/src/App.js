@@ -22,7 +22,8 @@ function App() {
         <ThemeProvider theme={darkTheme}>
             <Navbar loggedInState={user} signIn={app.signIn}/>
             <div className="App" style={{marginTop: "5vh"}}>
-                <Main />
+                {!user ? <div>Please login to use App!</div> : <Main />}
+                
             </div>
         </ThemeProvider>
     );
