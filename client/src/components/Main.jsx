@@ -20,7 +20,7 @@ const converter = { //new way to get id field from firebase
 export default function Main() {
     const [user, loading, error] = useAuthState(auth);
     const userRef = collection(db, user.uid);
-    const q = query(userRef, orderBy("createdAt", "desc"), limit(10)).withConverter(converter);
+    const q = query(userRef, orderBy("createdAt", "desc")).withConverter(converter);
     const [todoList, load, e] = useCollectionData(q);
     
 
