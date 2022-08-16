@@ -44,7 +44,7 @@ export default function Todo(props) {
                     color="text.secondary"
                     gutterBottom
                 >
-                    {props.createdAt === null ? "a few seconds ago" : moment(new Date(props.createdAt.seconds * 1000)).fromNow()}
+                    {props.createdAt === null ? "..." : moment(new Date(props.createdAt.seconds * 1000)).fromNow()}
                 </Typography>
 
                 <Typography
