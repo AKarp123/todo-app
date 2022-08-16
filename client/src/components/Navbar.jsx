@@ -5,9 +5,7 @@ import {
     Toolbar,
     Typography,
     Button,
-    IconButton,
 } from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, signIn, signOut } from "../firebase";
 

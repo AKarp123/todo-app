@@ -1,6 +1,5 @@
 import React from "react";
 import Todo from "./Todo";
-import { v4 as uuidv4 } from "uuid";
 import { Grid } from "@mui/material";
 import NewTodo from "./NewTodo";
 import { auth, db } from "../firebase";
@@ -9,61 +8,40 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { collection, orderBy, query, limit } from "firebase/firestore";
 
 
-const todos = [
-    {
-        todoContent: "Work on this app",
-        isCompleted: false,
-        id: uuidv4(),
-    },
-    {
-        todoContent: "Reach 4 digit in osu!",
-        isCompleted: true,
-        id: uuidv4(),
-    },
-    {
-        todoContent: "Reach 4 digit in osu!",
-        isCompleted: true,
-        id: uuidv4(),
-    },
-    {
-        todoContent: "Reach 4 digit in osu!",
-        isCompleted: true,
-        id: uuidv4(),
-    },
-];
+const converter = { //new way to get id field from firebase
+    fromFirestore: function (snapshot) {
+        const data = snapshot.data();
+        return {
+            id: snapshot.id,
+            ...data,
+        };
+    }
+}
 export default function Main() {
     const [user, loading, error] = useAuthState(auth);
     const userRef = collection(db, user.uid);
-    const q = query(userRef, orderBy("createdAt", "desc"), limit(10));
-    const [todoList, load, e] = useCollectionData(q, { idField: "id" });
+    const q = query(userRef, orderBy("createdAt", "desc"), limit(10)).withConverter(converter);
+    const [todoList, load, e] = useCollectionData(q);
     
 
    
     
 
-    const removeTodo = (id) => {
-        // setTodos(todoList.filter((todo) => todo.id !== id));
-    };
+    
 
-    const addTodo = (todoObj) => {
-        // setTodos([...todoList, todoObj]);
-    };
-
-    const toggleComplete = (id) => {
-        // setTodos(
-        //     todoList.map((todo) => {
-        //         if (todo.id === id) {
-        //             todo.isCompleted = !todo.isCompleted;
-        //         }
-        //         return todo;
-        //     })
-        // );
-    };
-
-    if (e) {
+    if (e || error) {
         return <div>Please login to use app!</div>;
-    } else if (loading || todoList === undefined) {
+    } else if (loading || todoList === undefined || load) {
         return <div>Loading...</div>;
+    }
+    else if(todoList.length === 0) {
+        return (
+            <>
+                <div> Add your first todo!</div>
+                <div style={{ height: "50px" }}></div>
+                <NewTodo user={user} />
+            </>
+        )
     }
 
     return (
@@ -83,16 +61,16 @@ export default function Main() {
                         <Todo
                             num={index + 1}
                             id={todo.id}
+                            key={todo.id}
                             todoContent={todo.todoContent}
                             isCompleted={todo.isCompleted}
-                            toggleComplete={toggleComplete}
-                            removeTodo={removeTodo}
+                            createdAt={todo.createdAt}
                         />
                     </Grid>
                 ))}
             </Grid>
             <div style={{ height: "50px" }}></div>
-            <NewTodo addTodo={addTodo} />
+            <NewTodo user={user}/>
         </>
     );
 }

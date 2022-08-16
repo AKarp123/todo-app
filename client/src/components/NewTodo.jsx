@@ -1,16 +1,18 @@
 import React from "react";
 import { Button, TextField, Checkbox, FormControlLabel } from "@mui/material";
-import { v4 as uuidv4 } from "uuid";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase";
 
-export default function NewTodo(props) {
+export default function NewTodo({user}) {
     const [openForm, setOpenForm] = React.useState(false);
     const [todoContent, setTodoContent] = React.useState("");
     const [isCompleted, setIsCompleted] = React.useState(false);
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        props.addTodo({ todoContent, isCompleted, id: uuidv4() });
+        addTodo({ todoContent, isCompleted, });
         setOpenForm(false);
         setTodoContent("");
         setIsCompleted(false);
@@ -27,6 +29,14 @@ export default function NewTodo(props) {
             </Button>
         );
     }
+
+    const addTodo = async(todoObj) => {
+        
+        const userRef = collection(db, user.uid);
+        
+        const newTodo = await addDoc(userRef, {...todoObj, createdAt: serverTimestamp()});
+        console.log("New Todo ID: ", newTodo.id);
+    };
 
     return (
         <form onSubmit={handleSubmit}>
