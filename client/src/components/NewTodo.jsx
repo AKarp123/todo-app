@@ -53,7 +53,7 @@ export default function NewTodo({user}) {
                             onClick={(e) => setIsCompleted(!isCompleted)}
                         />
                     }
-                    label="Completed"
+                    label="Completed?"
                 />
             </div>
             <Button type="submit" variant="contained" color="primary"> Add Todo </Button>

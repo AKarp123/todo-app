@@ -10,9 +10,12 @@ import { updateDoc, deleteDoc, doc } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import moment from "moment";
+import EditTodo from "./EditTodo";
 
 export default function Todo(props) {
     const [user] = useAuthState(auth);
+    const [formVisibility, setFormVisibility] = React.useState(false);
+    
     const styles = {
         textDecoration: props.isCompleted ? "line-through" : "none",
     };
@@ -23,12 +26,26 @@ export default function Todo(props) {
         console.log("doc updated");
     };
 
+    const editTodo = async(todoContent) => {
+        
+        const userRef = doc(db, user.uid, props.id);
+        await updateDoc(userRef, { todoContent: todoContent });
+        console.log("doc updated");
+        setFormVisibility(false)
+        
+    }
+
     const removeTodo = async () => {
         const userRef = doc(db, user.uid, props.id);
         await deleteDoc(userRef);
         console.log("deleted doc");
     };
-    
+
+    const handleClick = (e) => {
+        if(e.detail === 2) {
+            setFormVisibility(true);
+        }
+    }
     return (
         <Card sx={{ minWidth: 275 }}>
             <CardContent>
@@ -48,14 +65,19 @@ export default function Todo(props) {
                 </Typography>
 
                 <Typography
+                    component='span'
                     variant="body2"
                     sx={{
                         ...styles,
                         paddingTop: "35px",
                         paddingBottom: "35px",
+                        display: "inline-block"
                     }}
+                    onClick={handleClick}
+                    
                 >
-                    {props.todoContent}
+                    {formVisibility ? <EditTodo editTodo={editTodo} tc={props.todoContent} /> : props.todoContent}
+
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
