@@ -5,6 +5,7 @@ import {
     CardContent,
     Button,
     Typography,
+    Tooltip,
 } from "@mui/material";
 import { updateDoc, deleteDoc, doc } from "firebase/firestore";
 import { auth, db } from "../firebase";
@@ -15,7 +16,7 @@ import EditTodo from "./EditTodo";
 export default function Todo(props) {
     const [user] = useAuthState(auth);
     const [formVisibility, setFormVisibility] = React.useState(false);
-    
+
     const styles = {
         textDecoration: props.isCompleted ? "line-through" : "none",
     };
@@ -26,14 +27,12 @@ export default function Todo(props) {
         console.log("doc updated");
     };
 
-    const editTodo = async(todoContent) => {
-        
+    const editTodo = async (todoContent) => {
         const userRef = doc(db, user.uid, props.id);
         await updateDoc(userRef, { todoContent: todoContent });
         console.log("doc updated");
-        setFormVisibility(false)
-        
-    }
+        setFormVisibility(false);
+    };
 
     const removeTodo = async () => {
         const userRef = doc(db, user.uid, props.id);
@@ -42,10 +41,10 @@ export default function Todo(props) {
     };
 
     const handleClick = (e) => {
-        if(e.detail === 2) {
+        if (e.detail === 2) {
             setFormVisibility(true);
         }
-    }
+    };
     return (
         <Card sx={{ minWidth: 275 }}>
             <CardContent>
@@ -61,24 +60,34 @@ export default function Todo(props) {
                     color="text.secondary"
                     gutterBottom
                 >
-                    {props.createdAt === null ? "..." : moment(new Date(props.createdAt.seconds * 1000)).fromNow()}
+                    {props.createdAt === null
+                        ? "..."
+                        : moment(
+                              new Date(props.createdAt.seconds * 1000)
+                          ).fromNow()}
                 </Typography>
-
-                <Typography
-                    component='span'
-                    variant="body2"
-                    sx={{
-                        ...styles,
-                        paddingTop: "35px",
-                        paddingBottom: "35px",
-                        display: "inline-block"
-                    }}
-                    onClick={handleClick}
-                    
-                >
-                    {formVisibility ? <EditTodo editTodo={editTodo} tc={props.todoContent} /> : props.todoContent}
-
-                </Typography>
+                <Tooltip title="Double click to edit">
+                    <Typography
+                        component="span"
+                        variant="body2"
+                        sx={{
+                            ...styles,
+                            paddingTop: "35px",
+                            paddingBottom: "35px",
+                            display: "inline-block",
+                        }}
+                        onClick={handleClick}
+                    >
+                        {formVisibility ? (
+                            <EditTodo
+                                editTodo={editTodo}
+                                tc={props.todoContent}
+                            />
+                        ) : (
+                            props.todoContent
+                        )}
+                    </Typography>
+                </Tooltip>
             </CardContent>
             <CardActions disableSpacing>
                 <Button size="small" onClick={toggleComplete}>
